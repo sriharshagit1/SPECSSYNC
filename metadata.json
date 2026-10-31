@@ -1,0 +1,6 @@
+{
+  "name": "SpecSync",
+  "description": "AI-assisted semiconductor specification compiler that converts hardware IP PDFs into a verified canonical register-map database, generates industry-standard outputs, and cross-checks against RTL and firmware headers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
