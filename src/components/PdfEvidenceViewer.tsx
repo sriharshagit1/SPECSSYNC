@@ -7,20 +7,6 @@ import {
   FileText,
   Search,
 } from 'lucide-react';
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-
-try {
-  if (typeof window !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl
-      ? new URL(pdfjsWorkerUrl, window.location.href).toString()
-      : `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-  }
-} catch {
-  if (pdfjsLib.GlobalWorkerOptions) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-  }
-}
 
 interface PdfEvidenceViewerProps {
   pdfBytes: Uint8Array | null;
@@ -57,6 +43,10 @@ export const PdfEvidenceViewer: React.FC<PdfEvidenceViewerProps> = ({
 
     const loadDoc = async () => {
       try {
+        const pdfjsLib = await import('pdfjs-dist');
+        if (pdfjsLib.GlobalWorkerOptions && !pdfjsLib.GlobalWorkerOptions.workerSrc) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+        }
         const clonedBytes = new Uint8Array(pdfBytes);
         const loadingTask = pdfjsLib.getDocument({ data: clonedBytes });
         const doc = await loadingTask.promise;

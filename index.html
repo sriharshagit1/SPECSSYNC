@@ -15,6 +15,36 @@
   </head>
   <body class="bg-slate-50 dark:bg-[#0B0F17] text-slate-900 dark:text-slate-100 antialiased selection:bg-sky-500/20 dark:selection:bg-sky-500/30 selection:text-sky-900 dark:selection:text-sky-200 transition-colors duration-150">
     <div id="root"></div>
-    <script type="module" src="./src/main.tsx"></script>
+    <script>
+      window.__loadSpecSyncDistFallback = function () {
+        if (window.__specSyncFallbackLoaded) return;
+        var hasBuiltBundle = Array.prototype.some.call(document.scripts, function (s) {
+          return s.src && s.src.indexOf('assets/specsync.js') !== -1 && s.src.indexOf('dist/assets/specsync.js') === -1;
+        });
+        if (hasBuiltBundle) return;
+        window.__specSyncFallbackLoaded = true;
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = './dist/assets/specsync.css';
+        document.head.appendChild(link);
+        var script = document.createElement('script');
+        script.type = 'module';
+        script.src = './dist/assets/specsync.js';
+        document.body.appendChild(script);
+      };
+    </script>
+    <script
+      type="module"
+      src="./src/main.tsx"
+      onerror="window.__loadSpecSyncDistFallback && window.__loadSpecSyncDistFallback()"
+    ></script>
+    <script>
+      setTimeout(function () {
+        var root = document.getElementById('root');
+        if (root && root.childNodes.length === 0) {
+          window.__loadSpecSyncDistFallback();
+        }
+      }, 600);
+    </script>
   </body>
 </html>
